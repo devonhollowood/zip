@@ -16,4 +16,9 @@ int main(){
         std::tie(i, c) = t;
         cout << "(" << i << ", " << c << ")" << endl;
     }
+    // Output:
+    //
+    // (1, a)
+    // (2, b)
+    // (3, c)
 }
