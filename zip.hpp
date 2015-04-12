@@ -22,7 +22,8 @@ class zipIterator<IteratorA, IteratorB, Iterators...>
                 typename std::iterator_traits<zipIterator<IteratorB,
                     Iterators...>>::value_type
             >()
-        ))>{
+        ))
+    >{
 private:
     IteratorA itr_;
     zipIterator<IteratorB, Iterators...> rest_itr_;
@@ -58,7 +59,8 @@ template<typename Iterator>
 class zipIterator<Iterator>
     : public std::iterator<
         std::forward_iterator_tag,
-        std::tuple<typename std::iterator_traits<Iterator>::value_type>> {
+        std::tuple<typename std::iterator_traits<Iterator>::value_type>
+    > {
 private:
     Iterator itr_;
 public:
@@ -81,15 +83,18 @@ public:
 };
 
 
-//template<typename ...iterators>
-//class zip{
-//private:
-    //zipIterator<Iterators...> begin_;
-    //zipIterator<Iterators...> end_;
-//public:
-    //zip(Iterators... itrs_) : begin_(itrs_...) {};
-    //zipIterator<Iterators...> begin() {return begin_;}
-    //zipIterator<Iterators...> end() {return end_;}
-//};
+template<typename... Containers>
+class zip{
+public:
+    using iterator = zipIterator<
+        decltype(std::declval<Containers>().begin())...>;
+    zip(Containers... cs) : begin_(iterator(std::begin(cs)...)),
+        end_(iterator(std::end(cs)...)) {};
+    iterator begin() {return begin_;}
+    iterator end() {return end_;}
+private:
+    iterator begin_;
+    iterator end_;
+};
 
 #endif
