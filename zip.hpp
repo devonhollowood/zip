@@ -84,11 +84,11 @@ public:
 
 
 template<typename... Containers>
-class zip{
+class ZipContainer{
 public:
     using iterator = zipIterator<
         decltype(std::declval<Containers>().begin())...>;
-    zip(Containers... cs) : begin_(iterator(std::begin(cs)...)),
+    ZipContainer(Containers&... cs) : begin_(iterator(std::begin(cs)...)),
         end_(iterator(std::end(cs)...)) {};
     iterator begin() {return begin_;}
     iterator end() {return end_;}
@@ -96,5 +96,10 @@ private:
     iterator begin_;
     iterator end_;
 };
+
+template<typename... Containers>
+ZipContainer<Containers...> zip(Containers&... cs){
+    return ZipContainer<Containers...>(cs...);
+}
 
 #endif
